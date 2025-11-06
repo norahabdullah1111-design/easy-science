@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة المصطلحات العلمية - المرحلة المتوسطة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
+
+        * {
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .animate-star {
+            animation: starPulse 0.6s ease-in-out;
+        }
+
+        @keyframes starPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .certificate-pattern {
+            background-image:
+                linear-gradient(45deg, rgba(93, 92, 222, 0.05) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(93, 92, 222, 0.05) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, rgba(93, 92, 222, 0.05) 75%),
+                linear-gradient(-45deg, transparent 75%, rgba(93, 92, 222, 0.05) 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(93, 92, 222, 0.2);
+        }
+
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+
+        .dark {
+            color-scheme: dark;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .dark ::-webkit-scrollbar-track {
+            background: #2d2d2d;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #5D5CDE;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a49b8;
+        }
+
+        .chat-bubble {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+
+    <!-- Login Page -->
+    <div id="loginPage" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="text-6xl mb-4">🧪</div>
+                <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">منصة المصطلحات العلمية</h1>
+                <p class="text-gray-600 dark:text-gray-400">للمرحلة المتوسطة</p>
+            </div>
+
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2 font-medium">الاسم الكامل</label>
+                    <input type="text" id="studentName" required
+                        class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2 font-medium">الجنس</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="gender" value="male" required class="peer hidden">
+                            <div class="px-4 py-3 text-base rounded-lg border-2 border-gray-300 dark:border-gray-600 peer-checked:border-purple-500 peer-checked:bg-purple-50 dark:peer-checked:bg-purple-900/30 text-center transition">
+                                👨‍🎓 طالب
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="gender" value="female" required class="peer hidden">
+                            <div class="px-4 py-3 text-base rounded-lg border-2 border-gray-300 dark:border-gray-600 peer-checked:border-purple-500 peer-checked:bg-purple-50 dark:peer-checked:bg-purple-900/30 text-center transition">
+                                👩‍🎓 طالبة
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2 font-medium">الصف</label>
+                    <select id="grade" required
+                        class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition">
+                        <option value="">اختر الصف</option>
+                        <option value="first">الأول المتوسط</option>
+                        <option value="second">الثاني المتوسط</option>
+                        <option value="third">الثالث المتوسط</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 dark:text-gray-300 mb-2 font-medium">المدرسة</label>
+                    <input type="text" id="school" required
+                        class="w-full px-4 py-3 text-base rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition">
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 rounded-lg font-bold text-lg hover:from-purple-700 hover:to-indigo-700 transition transform hover:scale-105 shadow-lg">
+                    ابدأ التعلم 🚀
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="hidden">
+        <!-- Header -->
+        <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4 space-x-reverse">
+                        <button id="menuBtn" class="text-2xl">☰</button>
+                        <div>
+                            <h1 class="text-xl font-bold text-gray-800 dark:text-white">المصطلحات العلمية</h1>
+                            <p class="text-sm text-gray-600 dark:text-gray-400" id="studentInfo"></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3 space-x-reverse">
+                        <div class="flex items-center space-x-1 space-x-reverse bg-yellow-100 dark:bg-yellow-900 px-3 py-1 rounded-full">
+                            <span id="starsCount" class="font-bold text-yellow-600 dark:text-yellow-400">0</span>
+                            <span class="text-xl">⭐</span>
+                        </div>
+                        <button id="chatToggleBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+                            💬 المساعد
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="mt-4">
+                    <div class="flex items-center justify-between text-sm mb-1">
+                        <span class="text-gray-600 dark:text-gray-400">التقدم الإجمالي</span>
+                        <span class="text-purple-600 dark:text-purple-400 font-bold" id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div id="progressBar" class="progress-bar bg-gradient-to-r from-purple-600 to-indigo-600 h-2 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- AI Chat Panel -->
+        <div id="chatPanel" class="hidden fixed top-0 left-0 w-full h-full bg-black/50 z-50">
+            <div class="absolute top-0 left-0 w-full md:w-96 h-full bg-white dark:bg-gray-800 shadow-2xl transform transition-transform duration-300">
+                <div class="flex flex-col h-full">
+                    <div class="bg-gradient-to-r from-purple-600 to-indigo-600 p-4 flex items-center justify-between">
+                        <h3 class="text-white font-bold text-lg">🤖 المساعد الذكي</h3>
+                        <button id="closeChatBtn" class="text-white text-2xl">&times;</button>
+                    </div>
+                    <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
+                    <div class="p-4 border-t dark:border-gray-700">
+                        <div class="flex space-x-2 space-x-reverse">
+                            <input type="text" id="chatInput" placeholder="اسأل أي سؤال علمي..."
+                                class="flex-1 px-4 py-3 text-base border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
+                            <button id="sendChatBtn" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition">
+                                إرسال
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Side Menu -->
+        <div id="sideMenu" class="hidden fixed top-0 right-0 w-80 h-full bg-white dark:bg-gray-800 shadow-2xl z-40 overflow-y-auto transform transition-transform duration-300">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">الوحدات الدراسية</h2>
+                    <button id="closeMenuBtn" class="text-2xl">&times;</button>
+                </div>
+                <div id="menuUnits" class="space-y-2"></div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-8">
+            <!-- Units Overview -->
+            <div id="unitsView" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+            <!-- Unit Content -->
+            <div id="unitContent" class="hidden">
+                <button id="backBtn" class="mb-6 flex items-center space-x-2 space-x-reverse text-purple-600 dark:text-purple-400 hover:text-purple-700 font-medium">
+                    <span>←</span>
+                    <span>العودة للوحدات</span>
+                </button>
+
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8">
+                    <div id="conceptContent"></div>
+                </div>
+            </div>
+
+            <!-- Quiz View -->
+            <div id="quizView" class="hidden">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8 max-w-3xl mx-auto">
+                    <div id="quizContent"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Certificate Modal -->
+    <div id="certificateModal" class="modal">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-2xl w-full mx-4 certificate-pattern">
+            <div id="certificateContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Dark Mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Data Structure - مبسط
+        const scientificUnits = [
+            {
+                id: 'biology',
+                title: 'علم الأحياء',
+                icon: '🧬',
+                color: 'from-green-500 to-teal-500',
+                concepts: [
+                    {
+                        title: 'الخلية',
+                        emoji: '🔬',
+                        content: `# الخلية - وحدة بناء الكائنات الحية
+
+## التعريف
+**الخلية** هي أصغر وحدة في الكائن الحي قادرة على الحياة والتكاثر.
+
+---
+
+## خريطة مفاهيم - مكونات الخلية
+
+<div class="concept-map bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl my-6">
+    <div class="text-center mb-6">
+        <div class="inline-block bg-purple-600 text-white px-6 py-3 rounded-full text-xl font-bold animate-pulse">🔬 الخلية</div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="cell-component bg-white dark:bg-gray-700 p-4 rounded-lg shadow-lg text-center hover:scale-110 transition-transform duration-300">
+            <div class="text-4xl mb-2">🧱</div>
+            <div class="font-bold text-purple-600 dark:text-purple-400">الغشاء الخلوي</div>
+            <div class="text-sm text-gray-600 dark:text-gray-300 mt-2">يحيط بالخلية ويحميها</div>
+        </div>
+        <div class="cell-component bg-white dark:bg-gray-700 p-4 rounded-lg shadow-lg text-center hover:scale-110 transition-transform duration-300">
+            <div class="text-4xl mb-2">💧</div>
+            <div class="font-bold text-blue-600 dark:text-blue-400">السيتوبلازم</div>
+            <div class="text-sm text-gray-600 dark:text-gray-300 mt-2">مادة هلامية شبه سائلة</div>
+        </div>
+        <div class="cell-component bg-white dark:bg-gray-700 p-4 rounded-lg shadow-lg text-center hover:scale-110 transition-transform duration-300">
+            <div class="text-4xl mb-2">🧬</div>
+            <div class="font-bold text-green-600 dark:text-green-400">النواة</div>
+            <div class="text-sm text-gray-600 dark:text-gray-300 mt-2">تحتوي على الحمض النووي DNA</div>
+        </div>
+        <div class="cell-component bg-white dark:bg-gray-700 p-4 rounded-lg shadow-lg text-center hover:scale-110 transition-transform duration-300">
+            <div class="text-4xl mb-2">⚡</div>
+            <div class="font-bold text-yellow-600 dark:text-yellow-400">الميتوكوندريا</div>
+            <div class="text-sm text-gray-600 dark:text-gray-300 mt-2">بيت الطاقة في الخلية</div>
+        </div>
+    </div>
+</div>
+
+---
+
+## المصطلحات العلمية
+
+<div class="terms-grid grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+    <div class="term-card bg-gradient-to-r from-purple-100 to-purple-200 dark:from-purple-900 dark:to-purple-800 p-4 rounded-lg">
+        <div class="flex items-start space-x-3 space-x-reverse">
+            <div class="text-3xl">🧱</div>
+            <div>
+                <h4 class="font-bold text-lg text-purple-900 dark:text-purple-100">الغشاء الخلوي</h4>
+                <p class="text-sm text-gray-700 dark:text-gray-300">طبقة رقيقة تحيط بالخلية وتتحكم في دخول وخروج المواد</p>
+            </div>
+        </div>
+    </div>
+    <div class="term-card bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 p-4 rounded-lg">
+        <div class="flex items-start space-x-3 space-x-reverse">
+            <div class="text-3xl">💧</div>
+            <div>
+                <h4 class="font-bold text-lg text-blue-900 dark:text-blue-100">السيتوبلازم</h4>
+                <p class="text-sm text-gray-700 dark:text-gray-300">سائل هلامي يملأ الخلية ويحتوي على عضيات صغيرة</p>
+            </div>
+        </div>
+    </div>
+    <div class="term-card bg-gradient-to-r from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 p-4 rounded-lg">
+        <div class="flex items-start space-x-3 space-x-reverse">
+            <div class="text-3xl">🧬</div>
+            <div>
+                <h4 class="font-bold text-lg text-green-900 dark:text-green-100">النواة</h4>
+                <p class="text-sm text-gray-700 dark:text-gray-300">مركز التحكم في الخلية، تحتوي على المعلومات الوراثية</p>
+            </div>
+        </div>
+    </div>
+    <div class="term-card bg-gradient-to-r from-yellow-100 to-yellow-200 dark:from-yellow-900 dark:to-yellow-800 p-4 rounded-lg">
+        <div class="flex items-start space-x-3 space-x-reverse">
+            <div class="text-3xl">⚡</div>
+            <div>
+                <h4 class="font-bold text-lg text-yellow-900 dark:text-yellow-100">الميتوكوندريا</h4>
+                <p class="text-sm text-gray-700 dark:text-gray-300">عضي يولد الطاقة اللازمة لنشاط الخلية</p>
+            </div>
+        </div>
+    </div>
+</div>`,
+                        questions: [
+                            { q: 'ما هو العضي المسؤول عن إنتاج الطاقة؟', options: ['النواة', 'الميتوكوندريا', 'الغشاء', 'السيتوبلازم'], correct: 1 },
+                            { q: 'أين توجد المادة الوراثية؟', options: ['السيتوبلازم', 'النواة', 'الغشاء', 'الميتوكوندريا'], correct: 1 }
+                        ]
+                    },
+                    {
+                        title: 'الجهاز الهضمي',
+                        emoji: '🍽️',
+                        content: `# الجهاز الهضمي
+
+## التعريف
+**الجهاز الهضمي** هو مجموعة من الأعضاء المسؤولة عن تحويل الطعام إلى مواد مغذية يمتصها الجسم.
+
+---
+
+## رسم توضيحي - رحلة الطعام 🍎
+
+<div class="digestive-journey bg-gradient-to-b from-pink-50 to-orange-50 dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl my-6">
+    <div class="space-y-4">
+        <div class="flex items-center space-x-4 space-x-reverse animate-fadeIn">
+            <div class="bg-red-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">1</div>
+            <div class="text-4xl">👄</div>
+            <div class="flex-1 bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                <h4 class="font-bold text-red-600 dark:text-red-400">الفم</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-300">يبدأ الهضم الميكانيكي بالمضغ والكيميائي باللعاب</p>
+            </div>
+            <div class="text-2xl">⬇️</div>
+        </div>
+        <div class="flex items-center space-x-4 space-x-reverse animate-fadeIn" style="animation-delay: 0.2s;">
+            <div class="bg-orange-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">2</div>
+            <div class="text-4xl">🫁</div>
+            <div class="flex-1 bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                <h4 class="font-bold text-orange-600 dark:text-orange-400">المريء</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-300">أنبوب ينقل الطعام من الفم إلى المعدة</p>
+            </div>
+            <div class="text-2xl">⬇️</div>
+        </div>
+        <div class="flex items-center space-x-4 space-x-reverse animate-fadeIn" style="animation-delay: 0.4s;">
+            <div class="bg-yellow-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">3</div>
+            <div class="text-4xl">🫃</div>
+            <div class="flex-1 bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                <h4 class="font-bold text-yellow-600 dark:text-yellow-400">المعدة</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-300">تهضم البروتينات بواسطة العصارة المعدية الحمضية</p>
+            </div>
+            <div class="text-2xl">⬇️</div>
+        </div>
+        <div class="flex items-center space-x-4 space-x-reverse animate-fadeIn" style="animation-delay: 0.6s;">
+            <div class="bg-green-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">4</div>
+            <div class="text-4xl">〰️</div>
+            <div class="flex-1 bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                <h4 class="font-bold text-green-600 dark:text-green-400">الأمعاء الدقيقة</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-300">تمتص العناصر الغذائية وتوصلها إلى الدم</p>
+            </div>
+            <div class="text-2xl">⬇️</div>
+        </div>
+        <div class="flex items-center space-x-4 space-x-reverse animate-fadeIn" style="animation-delay: 0.8s;">
+            <div class="bg-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">5</div>
+            <div class="text-4xl">💧</div>
+            <div class="flex-1 bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                <h4 class="font-bold text-blue-600 dark:text-blue-400">الأمعاء الغليظة</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-300">تمتص الماء وتُشكل الفضلات للإخراج</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+---
+
+## المصطلحات العلمية
+
+<div class="terms-glossary bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 my-6">
+    <div class="space-y-4">
+        <div class="term-item border-r-4 border-red-500 pr-4">
+            <h4 class="font-bold text-lg text-gray-800 dark:text-white">الهضم الميكانيكي</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400">تكسير الطعام فيزيائياً عن طريق المضغ والحركة</p>
+        </div>
+        <div class="term-item border-r-4 border-orange-500 pr-4">
+            <h4 class="font-bold text-lg text-gray-800 dark:text-white">الهضم الكيميائي</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400">تكسير الطعام بواسطة الإنزيمات والعصارات الهضمية</p>
+        </div>
+        <div class="term-item border-r-4 border-yellow-500 pr-4">
+            <h4 class="font-bold text-lg text-gray-800 dark:text-white">الإنزيمات</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400">مواد كيميائية تسرع عملية الهضم</p>
+        </div>
+        <div class="term-item border-r-4 border-green-500 pr-4">
+            <h4 class="font-bold text-lg text-gray-800 dark:text-white">الامتصاص</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400">انتقال العناصر الغذائية من الأمعاء إلى الدم</p>
+        </div>
+    </div>
+</div>`,
+                        questions: [
+                            { q: 'أين يتم امتصاص العناصر الغذائية؟', options: ['المعدة', 'الفم', 'الأمعاء الدقيقة', 'الأمعاء الغليظة'], correct: 2 },
+                            { q: 'ما وظيفة المعدة؟', options: ['امتصاص الماء', 'هضم الطعام', 'المضغ', 'الإخراج'], correct: 1 }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'physics',
+                title: 'الفيزياء',
+                icon: '⚡',
+                color: 'from-blue-500 to-cyan-500',
+                concepts: [
+                    {
+                        title: 'قوانين نيوتن',
+                        emoji: '🍎',
+                        content: `# قوانين نيوتن للحركة
+
+## القانون الأول (القصور الذاتي):
+الجسم الساكن يبقى ساكناً وال��تحرك يبقى متحركاً
+
+## القانون الثاني:
+القوة = الكتلة × التسارع
+F = m × a
+
+## القانون الثالث:
+لكل فعل رد فعل مساوٍ ومعاكس`,
+                        questions: [
+                            { q: 'ما هي معادلة القانون الثاني؟', options: ['F=m+a', 'F=m×a', 'F=m/a', 'F=m-a'], correct: 1 },
+                            { q: 'القانون الثالث يتحدث عن:', options: ['القصور', 'التسارع', 'الفعل ورد الفعل', 'الكتلة'], correct: 2 }
+                        ]
+                    },
+                    {
+                        title: 'الطاقة',
+                        emoji: '⚙️',
+                        content: `# الطاقة والشغل
+
+## أنواع الطاقة:
+- **طاقة الحركة**: طاقة الجسم المتحرك
+- **طاقة الوضع**: طاقة الجسم بسبب موضعه
+- **الطاقة الحرارية**
+- **الطاقة الكهربائية**
+
+## قانون حفظ الطاقة:
+الطاقة لا تفنى ولا تستحدث، بل تتحول`,
+                        questions: [
+                            { q: 'ماذا ينص قانون حفظ الطاقة؟', options: ['الطاقة تزيد', 'الطاقة تتحول', 'الطاقة تفنى', 'الطاقة ثابتة'], correct: 1 },
+                            { q: 'طاقة الجسم المتحرك تسمى:', options: ['طاقة وضع', 'طاقة حركة', 'طاقة حرارية', 'طاقة كيميائية'], correct: 1 }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'chemistry',
+                title: 'الكيمياء',
+                icon: '⚗️',
+                color: 'from-yellow-500 to-orange-500',
+                concepts: [
+                    {
+                        title: 'حالات المادة',
+                        emoji: '💨',
+                        content: `# حالات المادة
+
+## الحالات الثلاث:
+
+### الصلبة:
+- شكل وحجم محدد
+- جزيئات متقاربة
+
+### السائلة:
+- حجم محدد وشكل غير محدد
+- تأخذ شكل الإناء
+
+### الغازية:
+- لا شكل ولا حجم محدد
+- جزيئات متباعدة`,
+                        questions: [
+                            { q: 'أي حالة لها شكل وحجم محدد؟', options: ['الغازية', 'السائلة', 'الصلبة', 'كلها'], correct: 2 },
+                            { q: 'تحول السائل إلى غاز يسمى:', options: ['انصهار', 'تكثف', 'تبخر', 'تجمد'], correct: 2 }
+                        ]
+                    },
+                    {
+                        title: 'الذرة',
+                        emoji: '⚛️',
+                        content: `# الذرة
+
+## مكونات الذرة:
+- **البروتون**: شحنته موجبة (+)
+- **النيوترون**: متعادل
+- **الإلكترون**: شحنته سالبة (-)
+
+## العدد الذري = عدد البروتونات`,
+                        questions: [
+                            { q: 'ما شحنة البروتون؟', options: ['سالبة', 'موجبة', 'متعادلة', 'ليس له شحنة'], correct: 1 },
+                            { q: 'أين توجد معظم كتلة الذرة؟', options: ['الإلكترونات', 'الفراغ', 'النواة', 'المدارات'], correct: 2 }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'earth',
+                title: 'علوم الأرض',
+                icon: '🌍',
+                color: 'from-purple-500 to-pink-500',
+                concepts: [
+                    {
+                        title: 'طبقات الأرض',
+                        emoji: '🏔️',
+                        content: `# طبقات الأرض
+
+## ا��طبقات:
+- **القشرة**: الطبقة الخارجية
+- **الستار**: طبقة حارة تحت القشرة
+- **اللب الخارجي**: سائل
+- **اللب الداخلي**: صلب وحار جداً`,
+                        questions: [
+                            { q: 'ما هي الطبقة الخارجية للأرض؟', options: ['الستار', 'القشرة', 'اللب', 'الغلاف'], correct: 1 },
+                            { q: 'ما حالة اللب الداخلي؟', options: ['سائل', 'صلب', 'غازي', 'لين'], correct: 1 }
+                        ]
+                    },
+                    {
+                        title: 'الغلاف الجوي',
+                        emoji: '🌤️',
+                        content: `# الغلاف الجوي
+
+## التركيب:
+- النيتروجين: 78%
+- الأكسجين: 21%
+- غازات أخرى: 1%
+
+## أهم الطبقات:
+- **التروبوسفير**: تحدث فيها الظواهر الجوية
+- **الستراتوسفير**: تحتوي على طبقة الأوزون`,
+                        questions: [
+                            { q: 'ما أكثر غاز في الغلاف الجوي؟', options: ['الأكسجين', 'النيتروجين', 'ثاني أكسيد الكربون', 'الأرجون'], correct: 1 },
+                            { q: 'أين توجد طبقة الأوزون؟', options: ['التروبوسفير', 'الستراتوسفير', 'الميزوسفير', 'الإكسوسفير'], correct: 1 }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // App State
+        let userData = null;
+        let progress = {};
+        let currentUnit = null;
+        let currentConceptIndex = 0;
+        let currentQuiz = null;
+        let totalStars = 0;
+
+        // Load/Save Progress (using in-memory storage for iframe compatibility)
+        function loadProgress() {
+            // Data persists only during the session in iframe environment
+            // This is a limitation of the iframe sandbox
+        }
+
+        function saveProgress() {
+            // Data persists in memory during the session
+            // In a production environment, you would save to a backend server
+        }
+
+        // Login Handler
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            userData = {
+                name: document.getElementById('studentName').value,
+                gender: document.querySelector('input[name="gender"]:checked').value,
+                grade: document.getElementById('grade').value,
+                school: document.getElementById('school').value
+            };
+
+            saveProgress();
+            showMainApp();
+        });
+
+        function showMainApp() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+
+            const gradeText = {
+                'first': 'الأول المتوسط',
+                'second': 'الثاني المتوسط',
+                'third': 'الثالث المتوسط'
+            }[userData.grade];
+
+            document.getElementById('studentInfo').textContent = `${userData.name} - ${gradeText}`;
+
+            updateStarsDisplay();
+            renderUnits();
+            updateProgress();
+        }
+
+        // Render Units
+        function renderUnits() {
+            const container = document.getElementById('unitsView');
+            const menuContainer = document.getElementById('menuUnits');
+
+            container.innerHTML = '';
+            menuContainer.innerHTML = '';
+
+            scientificUnits.forEach(unit => {
+                const completed = progress[unit.id]?.completed || 0;
+                const total = unit.concepts.length;
+                const percent = Math.round((completed / total) * 100);
+
+                const card = document.createElement('div');
+                card.className = 'bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden card-hover cursor-pointer';
+                card.innerHTML = `
+                    <div class="bg-gradient-to-r ${unit.color} p-6 text-white">
+                        <div class="text-5xl mb-2">${unit.icon}</div>
+                        <h3 class="text-xl font-bold">${unit.title}</h3>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between text-sm mb-2">
+                            <span class="text-gray-600 dark:text-gray-400">${completed} من ${total}</span>
+                            <span class="text-purple-600 dark:text-purple-400 font-bold">${percent}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="progress-bar bg-gradient-to-r ${unit.color} h-2 rounded-full" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+                card.addEventListener('click', () => openUnit(unit));
+                container.appendChild(card);
+
+                const menuItem = document.createElement('button');
+                menuItem.className = 'w-full text-right p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition flex items-center space-x-3 space-x-reverse';
+                menuItem.innerHTML = `
+                    <span class="text-2xl">${unit.icon}</span>
+                    <span class="flex-1 text-gray-800 dark:text-white">${unit.title}</span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">${percent}%</span>
+                `;
+                menuItem.addEventListener('click', () => {
+                    openUnit(unit);
+                    document.getElementById('sideMenu').classList.add('hidden');
+                });
+                menuContainer.appendChild(menuItem);
+            });
+        }
+
+        function openUnit(unit) {
+            currentUnit = unit;
+            currentConceptIndex = 0;
+
+            if (!progress[unit.id]) {
+                progress[unit.id] = { completed: 0, concepts: {} };
+            }
+
+            document.getElementById('unitsView').classList.add('hidden');
+            document.getElementById('unitContent').classList.remove('hidden');
+
+            showConcept(0);
+        }
+
+        function showConcept(index) {
+            currentConceptIndex = index;
+            const concept = currentUnit.concepts[index];
+
+            const content = document.getElementById('conceptContent');
+            content.innerHTML = `
+                <div class="mb-6">
+                    <div class="text-6xl text-center mb-4">${concept.emoji}</div>
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-2 text-center">${concept.title}</h2>
+                    <div class="flex items-center justify-center space-x-2 space-x-reverse text-sm text-gray-600 dark:text-gray-400">
+                        <span>${currentUnit.title}</span>
+                        <span>•</span>
+                        <span>مفهوم ${index + 1} من ${currentUnit.concepts.length}</span>
+                    </div>
+                </div>
+
+                <div class="prose prose-lg max-w-none dark:prose-invert" id="markdownContent"></div>
+
+                <div class="flex items-center justify-between mt-8 pt-6 border-t dark:border-gray-700">
+                    <button id="prevConceptBtn" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition ${index === 0 ? 'invisible' : ''}">
+                        ← السابق
+                    </button>
+                    <button id="startQuizBtn" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition font-bold shadow-lg">
+                        ابدأ الاختبار 📝
+                    </button>
+                    <button id="nextConceptBtn" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition ${index === currentUnit.concepts.length - 1 ? 'invisible' : ''}">
+                        التالي →
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('markdownContent').innerHTML = marked.parse(concept.content);
+
+            if (index > 0) {
+                document.getElementById('prevConceptBtn').addEventListener('click', () => showConcept(index - 1));
+            }
+            if (index < currentUnit.concepts.length - 1) {
+                document.getElementById('nextConceptBtn').addEventListener('click', () => showConcept(index + 1));
+            }
+            document.getElementById('startQuizBtn').addEventListener('click', () => startQuiz(concept));
+        }
+
+        function startQuiz(concept) {
+            currentQuiz = {
+                concept,
+                questions: concept.questions,
+                currentQuestion: 0,
+                answers: [],
+                score: 0
+            };
+
+            document.getElementById('unitContent').classList.add('hidden');
+            document.getElementById('quizView').classList.remove('hidden');
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = currentQuiz.questions[currentQuiz.currentQuestion];
+            const total = currentQuiz.questions.length;
+
+            const content = document.getElementById('quizContent');
+            content.innerHTML = `
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">سؤال ${currentQuiz.currentQuestion + 1} من ${total}</span>
+                        <span class="text-2xl">${currentQuiz.concept.emoji}</span>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-4">
+                        <div class="progress-bar bg-gradient-to-r from-purple-600 to-indigo-600 h-2 rounded-full"
+                             style="width: ${((currentQuiz.currentQuestion + 1) / total) * 100}%"></div>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">${q.q}</h3>
+
+                <div class="space-y-3" id="optionsContainer"></div>
+            `;
+
+            const optionsContainer = document.getElementById('optionsContainer');
+            q.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-right p-4 text-base rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:border-purple-500 dark:hover:border-purple-400 transition bg-white dark:bg-gray-700 text-gray-800 dark:text-white';
+                btn.textContent = option;
+                btn.addEventListener('click', () => selectAnswer(index, btn));
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(selectedIndex, selectedBtn) {
+            const q = currentQuiz.questions[currentQuiz.currentQuestion];
+            const isCorrect = selectedIndex === q.correct;
+
+            currentQuiz.answers.push(isCorrect);
+            if (isCorrect) currentQuiz.score++;
+
+            const buttons = document.querySelectorAll('#optionsContainer button');
+            buttons.forEach((btn, index) => {
+                btn.disabled = true;
+                if (index === q.correct) {
+                    btn.classList.add('bg-green-500', 'text-white', 'border-green-500');
+                } else if (index === selectedIndex && !isCorrect) {
+                    btn.classList.add('bg-red-500', 'text-white', 'border-red-500');
+                }
+            });
+
+            setTimeout(() => {
+                if (currentQuiz.currentQuestion < currentQuiz.questions.length - 1) {
+                    currentQuiz.currentQuestion++;
+                    showQuestion();
+                } else {
+                    finishQuiz();
+                }
+            }, 1500);
+        }
+
+        function finishQuiz() {
+            const total = currentQuiz.questions.length;
+            const score = currentQuiz.score;
+            const percent = Math.round((score / total) * 100);
+
+            let stars = 0;
+            let message = '';
+            let emoji = '';
+
+            const isMale = userData.gender === 'male';
+
+            if (score === total) {
+                stars = 2;
+                message = isMale ? 'ممتاز ومتفوق! بارك الله فيك' : 'ممتازة ومتفوقة! بارك الله فيك';
+                emoji = '🌟🌟';
+            } else if (score >= total - 1) {
+                stars = 1;
+                message = isMale ? 'جيد جداً! واصل التميز' : 'جيدة جداً! واصلي التميز';
+                emoji = '⭐';
+            } else {
+                stars = 0;
+                message = isMale ? 'يحتاج مراجعة. لنعيد الشرح' : 'يحتاج مراجعة. لنعيد الشرح';
+                emoji = '📚';
+            }
+
+            if (stars > 0) {
+                totalStars += stars;
+                updateStarsDisplay();
+
+                if (!progress[currentUnit.id].concepts[currentConceptIndex]) {
+                    progress[currentUnit.id].completed++;
+                }
+                progress[currentUnit.id].concepts[currentConceptIndex] = true;
+
+                saveProgress();
+                updateProgress();
+            }
+
+            const content = document.getElementById('quizContent');
+            content.innerHTML = `
+                <div class="text-center fade-in">
+                    <div class="text-8xl mb-6 animate-star">${emoji}</div>
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">${message}</h2>
+                    <div class="text-6xl font-bold text-purple-600 dark:text-purple-400 mb-2">${score}/${total}</div>
+                    <div class="text-xl text-gray-600 dark:text-gray-400 mb-8">${percent}%</div>
+
+                    ${stars === 0 ? `
+                        <button id="reviewBtn" class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-bold mb-4">
+                            مراجعة الدرس 📖
+                        </button>
+                    ` : ''}
+
+                    <div class="flex justify-center space-x-3 space-x-reverse">
+                        ${currentConceptIndex < currentUnit.concepts.length - 1 ? `
+                            <button id="nextConceptQuizBtn" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition font-bold">
+                                المفهوم التالي →
+                            </button>
+                        ` : `
+                            <button id="finishUnitBtn" class="px-8 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition font-bold">
+                                إنهاء الوحدة ✓
+                            </button>
+                        `}
+                        <button id="backToUnitsBtn" class="px-8 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                            العودة للوحدات
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            const reviewBtn = document.getElementById('reviewBtn');
+            if (reviewBtn) {
+                reviewBtn.addEventListener('click', () => {
+                    document.getElementById('quizView').classList.add('hidden');
+                    document.getElementById('unitContent').classList.remove('hidden');
+                    showConcept(currentConceptIndex);
+                });
+            }
+
+            const nextBtn = document.getElementById('nextConceptQuizBtn');
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    document.getElementById('quizView').classList.add('hidden');
+                    document.getElementById('unitContent').classList.remove('hidden');
+                    showConcept(currentConceptIndex + 1);
+                });
+            }
+
+            const finishBtn = document.getElementById('finishUnitBtn');
+            if (finishBtn) {
+                finishBtn.addEventListener('click', checkCompletion);
+            }
+
+            document.getElementById('backToUnitsBtn').addEventListener('click', backToUnits);
+        }
+
+        function checkCompletion() {
+            const allCompleted = scientificUnits.every(unit => {
+                const unitProgress = progress[unit.id];
+                return unitProgress && unitProgress.completed === unit.concepts.length;
+            });
+
+            if (allCompleted) {
+                showCertificate();
+            } else {
+                backToUnits();
+            }
+        }
+
+        function showCertificate() {
+            const modal = document.getElementById('certificateModal');
+            const content = document.getElementById('certificateContent');
+
+            const isMale = userData.gender === 'male';
+            const title = isMale ? 'الطالب المتميز' : 'الطالبة المتميزة';
+            const message = isMale ? 'أشكرك على الاستمرار بالتعلم' : 'أشكركِ على الاستمرار بالتعلم';
+
+            content.innerHTML = `
+                <div class="text-center">
+                    <div class="text-6xl mb-6">🏆</div>
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">شهادة تقدير</h2>
+                    <div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-8 rounded-xl mb-6">
+                        <p class="text-xl mb-2">تُمنح هذه الشهادة إلى</p>
+                        <h3 class="text-4xl font-bold mb-2">${userData.name}</h3>
+                        <p class="text-lg">${title}</p>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">من مدرسة: ${userData.school}</p>
+                    <p class="text-xl text-gray-800 dark:text-white mb-6">${message}</p>
+                    <div class="flex items-center justify-center space-x-2 space-x-reverse mb-6">
+                        <span class="text-3xl">⭐</span>
+                        <span class="text-4xl font-bold text-yellow-600 dark:text-yellow-400">${totalStars}</span>
+                        <span class="text-gray-600 dark:text-gray-400">نجمة</span>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">شارك هذه الرسالة مع معلمك</p>
+                    <button id="closeCertificateBtn" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition font-bold">
+                        إغلاق
+                    </button>
+                </div>
+            `;
+
+            modal.classList.add('active');
+
+            document.getElementById('closeCertificateBtn').addEventListener('click', () => {
+                modal.classList.remove('active');
+                backToUnits();
+            });
+        }
+
+        function backToUnits() {
+            document.getElementById('unitContent').classList.add('hidden');
+            document.getElementById('quizView').classList.add('hidden');
+            document.getElementById('unitsView').classList.remove('hidden');
+
+            currentUnit = null;
+            currentConceptIndex = 0;
+            renderUnits();
+        }
+
+        function updateProgress() {
+            let totalConcepts = 0;
+            let completedConcepts = 0;
+
+            scientificUnits.forEach(unit => {
+                totalConcepts += unit.concepts.length;
+                completedConcepts += progress[unit.id]?.completed || 0;
+            });
+
+            const percent = Math.round((completedConcepts / totalConcepts) * 100);
+
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressPercent').textContent = percent + '%';
+        }
+
+        function updateStarsDisplay() {
+            document.getElementById('starsCount').textContent = totalStars;
+        }
+
+        // Menu Toggle
+        document.getElementById('menuBtn').addEventListener('click', () => {
+            document.getElementById('sideMenu').classList.remove('hidden');
+        });
+
+        document.getElementById('closeMenuBtn').addEventListener('click', () => {
+            document.getElementById('sideMenu').classList.add('hidden');
+        });
+
+        document.getElementById('backBtn').addEventListener('click', backToUnits);
+
+        // Chat Functionality
+        document.getElementById('chatToggleBtn').addEventListener('click', () => {
+            document.getElementById('chatPanel').classList.remove('hidden');
+        });
+
+        document.getElementById('closeChatBtn').addEventListener('click', () => {
+            document.getElementById('chatPanel').classList.add('hidden');
+        });
+
+        if (window.Poe) {
+            window.Poe.registerHandler('chat-handler', (result) => {
+                const msg = result.responses[0];
+
+                if (msg.status === 'incomplete') {
+                    updateChatMessage('ai', msg.content, false);
+                } else if (msg.status === 'complete') {
+                    updateChatMessage('ai', msg.content, true);
+                } else if (msg.status === 'error') {
+                    addChatMessage('ai', 'عذراً، حدث خطأ. يرجى المحاولة مرة أخرى.', true);
+                }
+            });
+        }
+
+        function addChatMessage(role, content, isComplete) {
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = `chat-bubble ${role === 'user' ? 'text-right' : 'text-left'}`;
+
+            const bubble = document.createElement('div');
+            bubble.className = `inline-block max-w-[80%] p-3 rounded-lg ${
+                role === 'user'
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white'
+            }`;
+
+            if (role === 'ai' && !isComplete) {
+                bubble.innerHTML = content + ' <span class="animate-pulse">▋</span>';
+            } else {
+                bubble.innerHTML = marked.parse(content);
+            }
+
+            div.appendChild(bubble);
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+
+            return div;
+        }
+
+        function updateChatMessage(role, content, isComplete) {
+            const container = document.getElementById('chatMessages');
+            const lastMessage = container.lastElementChild;
+
+            if (lastMessage && lastMessage.classList.contains('text-left')) {
+                const bubble = lastMessage.querySelector('div');
+                if (bubble) {
+                    if (!isComplete) {
+                        bubble.innerHTML = marked.parse(content) + ' <span class="animate-pulse">▋</span>';
+                    } else {
+                        bubble.innerHTML = marked.parse(content);
+                    }
+                }
+            } else {
+                addChatMessage(role, content, isComplete);
+            }
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            addChatMessage('user', message, true);
+            input.value = '';
+
+            addChatMessage('ai', 'جارٍ التفكير...', false);
+
+            if (window.Poe) {
+                try {
+                    await window.Poe.sendUserMessage(
+                        `@Claude-Sonnet-4.5 أنت مساعد تعليمي للعلوم في المرحلة المتوسطة السعودية. أجب على السؤال التالي بشكل واضح ومبسط:\n\n${message}`,
+                        {
+                            handler: 'chat-handler',
+                            stream: true,
+                            openChat: false
+                        }
+                    );
+                } catch (err) {
+                    addChatMessage('ai', 'عذراً، حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.', true);
+                }
+            } else {
+                setTimeout(() => {
+                    const container = document.getElementById('chatMessages');
+                    container.removeChild(container.lastElementChild);
+                    addChatMessage('ai', 'عذراً، المساعد الذكي غير متاح حالياً. هذا التطبيق يعمل بشكل أفضل على منصة Poe.', true);
+                }, 500);
+            }
+        }
+
+        document.getElementById('sendChatBtn').addEventListener('click', sendChatMessage);
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendChatMessage();
+            }
+        });
+
+        // Initialize
+        loadProgress();
+        if (userData) {
+            showMainApp();
+        }
+    </script>
+</body>
+</html>
+
